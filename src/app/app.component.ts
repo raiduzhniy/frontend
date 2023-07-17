@@ -11,8 +11,11 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { selectUser } from './core/state/auth/auth.selector';
 import { AppStateInterface } from './core/types/app-state.interface';
+import { ADMIN_CHILDREN_ROUTES } from './modules/admin';
 import { COMMON_ROUTES } from './modules/basic';
 import { LoginDialogComponent } from './shared/components/dialogs';
+import { ForRolesDirective } from './shared/directives/for-roles.directive';
+import { UserRole } from './shared/enums';
 import { User } from './shared/interfaces';
 import * as AuthActions from './core/state/auth/auth.actions';
 
@@ -29,11 +32,14 @@ import * as AuthActions from './core/state/auth/auth.actions';
     NgOptimizedImage,
     MatDialogModule,
     MatMenuModule,
+    ForRolesDirective,
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
+  userRoles = UserRole;
+
   user$: Observable<User | null | undefined>;
   constructor(
     private dialog: MatDialog,
@@ -43,6 +49,8 @@ export class AppComponent {
   }
 
   commonRoutes: Route[] = COMMON_ROUTES;
+
+  adminRoutes: Route[] = ADMIN_CHILDREN_ROUTES;
 
   openLoginDialog() {
     this.dialog.open(LoginDialogComponent, {

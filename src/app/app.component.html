@@ -42,7 +42,26 @@
     </ng-template>
   </div>
 </mat-toolbar>
+<mat-toolbar
+  *rdnForRole="[userRoles.Admin, userRoles.Superadmin]"
+  color="accent"
+  class="admin-toolbar">
+  <nav [tabPanel]="tabPanel" mat-tab-nav-bar>
+    <a
+      *ngFor="let route of adminRoutes"
+      mat-tab-link
+      [routerLink]="['admin', route.path]"
+      [active]="link.isActive"
+      routerLinkActive
+      [routerLinkActiveOptions]="{ exact: true }"
+      #link="routerLinkActive">
+      {{ route.data?.['label'] }}
+    </a>
+  </nav>
+</mat-toolbar>
 
 <mat-tab-nav-panel #tabPanel>
-  <router-outlet></router-outlet>
+  <div class="container pt-4 pb-4">
+    <router-outlet></router-outlet>
+  </div>
 </mat-tab-nav-panel>
