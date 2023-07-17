@@ -1,17 +1,35 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, mergeMap, of } from 'rxjs';
+import { CookieService } from 'ngx-cookie-service';
+import { catchError, map, mergeMap, of, tap } from 'rxjs';
 import { AuthService } from '../../services';
 import * as AuthActions from './auth.actions';
 
 @Injectable()
 export class AuthEffects {
+  cookieService = inject(CookieService);
+
+  getUser$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(AuthActions.getUser),
+      mergeMap(() =>
+        this.authService.getUser().pipe(
+          map(user => AuthActions.getUserSuccess({ user })),
+          catchError(() => of(AuthActions.getUserFailure()))
+        )
+      )
+    );
+  });
+
   login$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(AuthActions.login),
       mergeMap(({ loginDto }) =>
         this.authService.login(loginDto).pipe(
           map(loginResponse => AuthActions.loginSuccess({ loginResponse })),
+          tap(({ loginResponse }) =>
+            this.cookieService.set('token', loginResponse.token, { expires: 7 })
+          ),
           catchError(({ error }) => {
             return of(AuthActions.loginFailure({ error: error.message }));
           })
@@ -19,6 +37,16 @@ export class AuthEffects {
       )
     );
   });
+
+  logout$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(AuthActions.logout),
+        tap(() => this.cookieService.delete('token'))
+      );
+    },
+    { dispatch: false }
+  );
 
   constructor(
     private actions$: Actions,

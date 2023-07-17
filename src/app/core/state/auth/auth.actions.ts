@@ -1,8 +1,8 @@
 import { createAction, props } from '@ngrx/store';
-import { LoginDto, LoginResponse } from '../../../shared/interfaces';
+import { LoginDto, LoginResponse, User } from '../../../shared/interfaces';
 
 export const login = createAction(
-  '[User] Get User',
+  '[User] Login',
   props<{ loginDto: LoginDto }>()
 );
 
@@ -15,3 +15,14 @@ export const loginFailure = createAction(
   '[User] Login Failure',
   props<{ error: string }>()
 );
+
+export const getUser = createAction('[User] Get User');
+
+export const getUserSuccess = createAction(
+  '[User] Get User Success',
+  props<{ user: User }>()
+);
+
+export const getUserFailure = createAction('[User] Get User Failure');
+
+export const logout = createAction('[User] Logout');

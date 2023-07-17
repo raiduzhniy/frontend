@@ -18,7 +18,7 @@ export class ApiService {
 
   get<T>(
     url: string,
-    options: {
+    options?: {
       headers?:
         | HttpHeaders
         | {
@@ -36,11 +36,11 @@ export class ApiService {
               | ReadonlyArray<string | number | boolean>;
           };
       reportProgress?: boolean;
-      responseType: 'arraybuffer';
+      responseType?: 'json';
       withCredentials?: boolean;
     }
   ): Observable<T> {
-    return this.http.get<T>(`${this.baseUrl}/${url}`);
+    return this.http.get<T>(`${this.baseUrl}/${url}`, options);
   }
 
   post<T>(url: string, body: any | null): Observable<T> {

@@ -1,11 +1,15 @@
-import { provideHttpClient } from '@angular/common/http';
-import { ApplicationConfig } from '@angular/core';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { APP_INITIALIZER, ApplicationConfig } from '@angular/core';
+import { ErrorStateMatcher } from '@angular/material/core';
 import { provideRouter } from '@angular/router';
 import { environment } from '../environments/environment';
 
 import { routes } from './app.routes';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideStore } from '@ngrx/store';
+import { provideStore, Store } from '@ngrx/store';
+import { MyErrorStateMatcher } from './core/classes';
+import { UserInitializer } from './core/initializers/user.initializer';
+import { AuthInterceptor } from './core/interceptors';
 import { AuthEffects } from './core/state/auth/auth.effects';
 import { reducers, metaReducers } from './reducers';
 import { provideEffects } from '@ngrx/effects';
@@ -15,7 +19,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideAnimations(),
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([AuthInterceptor])),
     provideStore(reducers, { metaReducers }),
     provideEffects(AuthEffects),
     provideStoreDevtools({
@@ -25,5 +29,12 @@ export const appConfig: ApplicationConfig = {
       trace: false, //  If set to true, will include stack trace for every dispatched action, so you can see it in trace tab jumping directly to that part of code
       traceLimit: 75, // maximum stack trace frames to be stored (in case trace option was provided as true)
     }),
+    { provide: ErrorStateMatcher, useClass: MyErrorStateMatcher },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: UserInitializer,
+      deps: [Store],
+      multi: true,
+    },
   ],
 };
