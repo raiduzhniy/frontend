@@ -16,6 +16,7 @@
       [routerLink]="[route.path]"
       [active]="link.isActive"
       routerLinkActive
+      [routerLinkActiveOptions]="{ exact: true }"
       #link="routerLinkActive">
       {{ route.data?.['label'] }}
     </a>
