@@ -4,7 +4,6 @@ import * as UserActions from './auth.actions';
 
 export const initialState: AuthStateInterface = {
   isLoading: false,
-  token: null,
   user: undefined,
   error: null,
 };
@@ -21,7 +20,6 @@ export const authReducer = createReducer(
       ...state,
       isLoading: false,
       error: null,
-      token: loginResponse.token,
       user: loginResponse.user,
     })
   ),
@@ -32,5 +30,16 @@ export const authReducer = createReducer(
       isLoading: false,
       error,
     })
-  )
+  ),
+  on(UserActions.getUser, state => ({
+    ...state,
+    isLoading: true,
+  })),
+  on(UserActions.getUserSuccess, (state, { user }) => ({ ...state, user })),
+  on(UserActions.getUserFailure, state => ({
+    ...state,
+    user: null,
+    isLoading: false,
+  })),
+  on(UserActions.logout, state => ({ ...state, user: null }))
 );

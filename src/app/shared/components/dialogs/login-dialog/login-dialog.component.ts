@@ -4,17 +4,15 @@ import {
   FormBuilder,
   FormControl,
   FormGroup,
-  FormGroupDirective,
-  NgForm,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { ErrorStateMatcher } from '@angular/material/core';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { filter, Observable } from 'rxjs';
 import * as AuthActions from '../../../../core/state/auth/auth.actions';
 import {
   selectIsLoadingUser,
@@ -23,20 +21,6 @@ import {
 } from '../../../../core/state/auth/auth.selector';
 import { AppStateInterface } from '../../../../core/types/app-state.interface';
 import { User } from '../../../interfaces';
-
-export class MyErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(
-    control: FormControl | null,
-    form: FormGroupDirective | NgForm | null
-  ): boolean {
-    const isSubmitted = form && form.submitted;
-    return !!(
-      control &&
-      control.invalid &&
-      (control.dirty || control.touched || isSubmitted)
-    );
-  }
-}
 
 @Component({
   selector: 'rdn-login-dialog',
@@ -50,8 +34,8 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   ],
   templateUrl: './login-dialog.component.html',
   styleUrls: ['./login-dialog.component.scss'],
-  providers: [{ provide: ErrorStateMatcher, useClass: MyErrorStateMatcher }],
 })
+@UntilDestroy()
 export class LoginDialogComponent {
   isLoading$: Observable<boolean>;
   error$: Observable<string | null>;
@@ -63,7 +47,8 @@ export class LoginDialogComponent {
 
   constructor(
     fb: FormBuilder,
-    private store: Store<AppStateInterface>
+    private store: Store<AppStateInterface>,
+    public dialogRef: MatDialogRef<LoginDialogComponent>
   ) {
     this.isLoading$ = this.store.select(selectIsLoadingUser);
     this.error$ = this.store.select(selectUserError);
@@ -73,6 +58,8 @@ export class LoginDialogComponent {
       login: this.loginFC,
       password: this.passwordFC,
     });
+
+    this.watchForLogin();
   }
 
   login() {
@@ -81,5 +68,14 @@ export class LoginDialogComponent {
         AuthActions.login({ loginDto: this.form.getRawValue() })
       );
     }
+  }
+
+  private watchForLogin(): void {
+    this.user$
+      .pipe(
+        untilDestroyed(this),
+        filter(user => !!user)
+      )
+      .subscribe(user => this.dialogRef.close(user));
   }
 }

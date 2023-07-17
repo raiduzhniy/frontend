@@ -21,9 +21,24 @@
     </a>
   </nav>
   <div class="user-menu">
-    <button mat-icon-button (click)="openLoginDialog()">
-      <mat-icon>login</mat-icon>
+    <button
+      *ngIf="user$ | async as user; else unlogged"
+      [matMenuTriggerFor]="menu"
+      mat-icon-button>
+      <mat-icon>person</mat-icon>
     </button>
+
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Вийти</span>
+      </button>
+    </mat-menu>
+    <ng-template #unlogged>
+      <button mat-icon-button (click)="openLoginDialog()">
+        <mat-icon>login</mat-icon>
+      </button>
+    </ng-template>
   </div>
 </mat-toolbar>
 
