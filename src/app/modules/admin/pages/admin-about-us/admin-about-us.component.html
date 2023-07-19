@@ -1,0 +1,10 @@
+<mat-card>
+  <form (submit)="submitForm()" [formGroup]="form">
+    <mat-card-header>Редагувати інформацію про нас</mat-card-header>
+    <mat-card-content>
+      <angular-editor
+        formControlName="editor"
+        [config]="config"></angular-editor>
+    </mat-card-content>
+  </form>
+</mat-card>
