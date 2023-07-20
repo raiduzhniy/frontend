@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { map, Observable } from 'rxjs';
-import { UserRole } from '../../shared/enums';
-import { selectUser } from '../state/auth/auth.selector';
+import { UserRole } from '@shared/enums';
+import { selectUser } from '@state/auth/auth.selector';
 import { AppStateInterface } from '../types/app-state.interface';
 
 type RolesMapper = {

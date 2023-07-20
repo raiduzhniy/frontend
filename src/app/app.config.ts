@@ -6,11 +6,12 @@ import { environment } from '../environments/environment';
 
 import { routes } from './app.routes';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideStore, Store } from '@ngrx/store';
-import { MyErrorStateMatcher } from './core/classes';
-import { UserInitializer } from './core/initializers/user.initializer';
-import { AuthInterceptor } from './core/interceptors';
-import { AuthEffects } from './core/state/auth/auth.effects';
+import { provideStore } from '@ngrx/store';
+import { MyErrorStateMatcher } from '@core/classes';
+import { UserInitializer } from '@core/initializers/user.initializer';
+import { AuthInterceptor } from '@core/interceptors';
+import { AboutUsEffects } from '@state/about-us/about-us.effects';
+import { AuthEffects } from '@state/auth/auth.effects';
 import { reducers, metaReducers } from './reducers';
 import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
@@ -21,7 +22,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     provideHttpClient(withInterceptors([AuthInterceptor])),
     provideStore(reducers, { metaReducers }),
-    provideEffects(AuthEffects),
+    provideEffects(AuthEffects, AboutUsEffects),
     provideStoreDevtools({
       maxAge: 25, // Retains last 25 states
       logOnly: !environment.production, // Restrict extension to log-only mode
@@ -33,7 +34,6 @@ export const appConfig: ApplicationConfig = {
     {
       provide: APP_INITIALIZER,
       useFactory: UserInitializer,
-      deps: [Store],
       multi: true,
     },
   ],

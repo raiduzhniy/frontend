@@ -11,16 +11,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Store } from '@ngrx/store';
+import { AuthFacade } from '@state/auth';
 import { filter, Observable } from 'rxjs';
-import * as AuthActions from '../../../../core/state/auth/auth.actions';
-import {
-  selectIsLoadingUser,
-  selectUser,
-  selectUserError,
-} from '../../../../core/state/auth/auth.selector';
-import { AppStateInterface } from '../../../../core/types/app-state.interface';
-import { User } from '../../../interfaces';
 
 @Component({
   selector: 'rdn-login-dialog',
@@ -37,9 +29,8 @@ import { User } from '../../../interfaces';
 })
 @UntilDestroy()
 export class LoginDialogComponent {
-  isLoading$: Observable<boolean>;
-  error$: Observable<string | null>;
-  user$: Observable<User | undefined | null>;
+  isLoading$: Observable<boolean> = this.authFacade.isLoading$;
+  error$ = this.authFacade.error$;
 
   form: FormGroup;
   loginFC = new FormControl('', [Validators.required]);
@@ -47,13 +38,9 @@ export class LoginDialogComponent {
 
   constructor(
     fb: FormBuilder,
-    private store: Store<AppStateInterface>,
-    public dialogRef: MatDialogRef<LoginDialogComponent>
+    public dialogRef: MatDialogRef<LoginDialogComponent>,
+    private authFacade: AuthFacade
   ) {
-    this.isLoading$ = this.store.select(selectIsLoadingUser);
-    this.error$ = this.store.select(selectUserError);
-    this.user$ = this.store.select(selectUser);
-
     this.form = fb.group({
       login: this.loginFC,
       password: this.passwordFC,
@@ -64,14 +51,12 @@ export class LoginDialogComponent {
 
   login() {
     if (this.form.valid) {
-      this.store.dispatch(
-        AuthActions.login({ loginDto: this.form.getRawValue() })
-      );
+      this.authFacade.dispatchLogin(this.form.getRawValue());
     }
   }
 
   private watchForLogin(): void {
-    this.user$
+    this.authFacade.user$
       .pipe(
         untilDestroyed(this),
         filter(user => !!user)

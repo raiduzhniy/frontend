@@ -1,8 +1,9 @@
 import { inject, Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { CookieService } from 'ngx-cookie-service';
 import { catchError, map, mergeMap, of, tap } from 'rxjs';
-import { AuthService } from '../../services';
+import { AuthService } from '@core/services';
 import * as AuthActions from './auth.actions';
 
 @Injectable()
@@ -42,7 +43,10 @@ export class AuthEffects {
     () => {
       return this.actions$.pipe(
         ofType(AuthActions.logout),
-        tap(() => this.cookieService.delete('token'))
+        tap(() => {
+          this.cookieService.delete('token');
+          this.router.navigate(['']);
+        })
       );
     },
     { dispatch: false }
@@ -50,6 +54,7 @@ export class AuthEffects {
 
   constructor(
     private actions$: Actions,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 }

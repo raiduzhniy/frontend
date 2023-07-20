@@ -1,10 +1,25 @@
 <mat-card>
-  <form (submit)="submitForm()" [formGroup]="form">
-    <mat-card-header>Редагувати інформацію про нас</mat-card-header>
+  <form (submit)="submitForm()" [formGroup]="form" #formElem="ngForm">
     <mat-card-content>
-      <angular-editor
-        formControlName="editor"
-        [config]="config"></angular-editor>
+      <mat-form-field style="width: 100%" appearance="fill">
+        <mat-label>Заголовок</mat-label>
+        <input formControlName="title" matInput />
+        <mat-error *ngIf="titleFC.hasError('required')">
+          Обов`язкове поле
+        </mat-error>
+      </mat-form-field>
+      <angular-editor formControlName="html" [config]="config">
+      </angular-editor>
+      <mat-card-actions align="end">
+        <button
+          color="primary"
+          mat-raised-button
+          [disabled]="!!formElem.invalid || !!(isLoading$ | async)">
+          Зберегти
+        </button>
+      </mat-card-actions>
     </mat-card-content>
   </form>
 </mat-card>
+
+<div [innerHTML]="html"></div>
