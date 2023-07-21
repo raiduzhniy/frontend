@@ -1,4 +1,4 @@
-import { User } from '../../../shared/interfaces';
+import { User } from '@shared/interfaces';
 
 export interface AuthStateInterface {
   isLoading: boolean;

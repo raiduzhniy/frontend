@@ -46,4 +46,8 @@ export class ApiService {
   post<T>(url: string, body: any | null): Observable<T> {
     return this.http.post<T>(`${this.baseUrl}/${url}`, body);
   }
+
+  put<T>(url: string, body: any): Observable<T> {
+    return this.http.put<T>(`${this.baseUrl}/${url}`, body);
+  }
 }

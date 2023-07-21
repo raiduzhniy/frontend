@@ -7,17 +7,12 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Route, RouterModule } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { selectUser } from './core/state/auth/auth.selector';
-import { AppStateInterface } from './core/types/app-state.interface';
+import { AuthFacade } from '@state/auth';
 import { ADMIN_CHILDREN_ROUTES } from './modules/admin';
 import { COMMON_ROUTES } from './modules/basic';
-import { LoginDialogComponent } from './shared/components/dialogs';
-import { ForRolesDirective } from './shared/directives/for-roles.directive';
-import { UserRole } from './shared/enums';
-import { User } from './shared/interfaces';
-import * as AuthActions from './core/state/auth/auth.actions';
+import { LoginDialogComponent } from '@shared/components/dialogs';
+import { ForRolesDirective } from '@shared/directives/for-roles.directive';
+import { UserRole } from '@shared/enums';
 
 @Component({
   selector: 'rdn-root',
@@ -40,13 +35,12 @@ import * as AuthActions from './core/state/auth/auth.actions';
 export class AppComponent {
   userRoles = UserRole;
 
-  user$: Observable<User | null | undefined>;
+  user$ = this.authFacede.user$;
+
   constructor(
     private dialog: MatDialog,
-    private store: Store<AppStateInterface>
-  ) {
-    this.user$ = this.store.select(selectUser);
-  }
+    private authFacede: AuthFacade
+  ) {}
 
   commonRoutes: Route[] = COMMON_ROUTES;
 
@@ -59,6 +53,6 @@ export class AppComponent {
   }
 
   logout(): void {
-    this.store.dispatch(AuthActions.logout());
+    this.authFacede.dispatchLogout();
   }
 }

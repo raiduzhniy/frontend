@@ -1,27 +1,24 @@
 import { inject } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { AuthFacade } from '@state/auth';
 import { CookieService } from 'ngx-cookie-service';
 import { filter, Observable, take } from 'rxjs';
-import { User } from '../../shared/interfaces';
-import * as AuthActions from '../state/auth/auth.actions';
-import { selectUser } from '../state/auth/auth.selector';
-import { AppStateInterface } from '../types/app-state.interface';
+import { User } from '@shared/interfaces';
 
-export const UserInitializer = (
-  store: Store<AppStateInterface>
-): (() => Observable<User | null | undefined>) => {
+export const UserInitializer = (): (() => Observable<
+  User | null | undefined
+>) => {
   const cookieService = inject(CookieService);
+  const authFacade = inject(AuthFacade);
   const token = cookieService.get('token');
-  const user$ = store.select(selectUser);
 
   if (token) {
-    store.dispatch(AuthActions.getUser());
+    authFacade.dispatchGetUser();
   } else {
-    store.dispatch(AuthActions.getUserFailure());
+    authFacade.dispatchGetUserFailure();
   }
 
   return () =>
-    user$.pipe(
+    authFacade.user$.pipe(
       filter(user => user !== undefined),
       take(1)
     );
