@@ -16,6 +16,7 @@ import {
   AngularEditorModule,
 } from '@kolkov/angular-editor';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { LoaderDirective } from '@shared/directives';
 import { AboutUsFacade } from '@state/about-us';
 import { filter } from 'rxjs';
 import { TEXT_EDITOR_CONFIG } from '../../constants/editor.constant';
@@ -31,6 +32,7 @@ import { TEXT_EDITOR_CONFIG } from '../../constants/editor.constant';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
+    LoaderDirective,
   ],
   providers: [AboutUsFacade],
   templateUrl: './admin-about-us.component.html',
@@ -44,9 +46,8 @@ export class AdminAboutUsComponent implements OnInit {
 
   form: FormGroup;
 
-  html?: string;
-
   titleFC = new FormControl('', [Validators.required]);
+
   editorFC = new FormControl('');
 
   readonly config: AngularEditorConfig = {
