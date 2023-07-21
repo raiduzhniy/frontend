@@ -7,11 +7,6 @@ import { AdminPhotosComponent } from './pages/admin-photos/admin-photos.componen
 
 export const ADMIN_CHILDREN_ROUTES: Route[] = [
   {
-    path: '',
-    pathMatch: 'full',
-    redirectTo: 'photos',
-  },
-  {
     path: 'photos',
     component: AdminPhotosComponent,
     data: {
@@ -45,6 +40,13 @@ export const ADMIN_ROUTES: Route[] = [
   {
     path: '',
     component: AdminComponent,
-    children: ADMIN_CHILDREN_ROUTES,
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'photos',
+      },
+      ...ADMIN_CHILDREN_ROUTES,
+    ],
   },
 ];

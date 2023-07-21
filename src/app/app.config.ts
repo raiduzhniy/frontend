@@ -2,6 +2,7 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { APP_INITIALIZER, ApplicationConfig } from '@angular/core';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { provideRouter } from '@angular/router';
+import { ContactsEffects } from '@state/contacts/contacts.effects';
 import { environment } from '../environments/environment';
 
 import { routes } from './app.routes';
@@ -22,7 +23,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     provideHttpClient(withInterceptors([AuthInterceptor])),
     provideStore(reducers, { metaReducers }),
-    provideEffects(AuthEffects, AboutUsEffects),
+    provideEffects(AuthEffects, AboutUsEffects, ContactsEffects),
     provideStoreDevtools({
       maxAge: 25, // Retains last 25 states
       logOnly: !environment.production, // Restrict extension to log-only mode

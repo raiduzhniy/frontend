@@ -1,0 +1,10 @@
+<rdn-wrapper [isLoading]="isLoading">
+  <mat-card *ngIf="htmlData">
+    <mat-card-header class="mat-headline-5">
+      {{ htmlData.title }}
+    </mat-card-header>
+    <mat-card-content>
+      <div [innerHTML]="htmlData.html"></div>
+    </mat-card-content>
+  </mat-card>
+</rdn-wrapper>

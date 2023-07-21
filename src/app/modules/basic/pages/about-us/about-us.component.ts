@@ -1,13 +1,12 @@
-import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
-import { LoaderDirective } from '@shared/directives';
+import { Component, OnInit } from '@angular/core';
+import { HtmlPresentatorComponent } from '@shared/components';
 import { AboutUsFacade } from '@state/about-us';
 
 @Component({
   selector: 'rdn-about-us',
   standalone: true,
-  imports: [CommonModule, MatCardModule, LoaderDirective],
+  imports: [CommonModule, HtmlPresentatorComponent],
   providers: [AboutUsFacade],
   templateUrl: './about-us.component.html',
   styleUrls: ['./about-us.component.scss'],
