@@ -33,3 +33,6 @@ $frontend-theme: mat.define-light-theme((
 @include mat.all-component-themes($frontend-theme);
 
 /* You can add global styles to this file, and also import other style files */
+
+$my-typography: mat.define-typography-config();
+@include mat.typography-hierarchy($my-typography);
