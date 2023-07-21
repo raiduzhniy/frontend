@@ -29,7 +29,10 @@ export class AuthEffects {
         this.authService.login(loginDto).pipe(
           map(loginResponse => AuthActions.loginSuccess({ loginResponse })),
           tap(({ loginResponse }) =>
-            this.cookieService.set('token', loginResponse.token, { expires: 7 })
+            this.cookieService.set('token', loginResponse.token, {
+              expires: 7,
+              path: '/',
+            })
           ),
           catchError(({ error }) => {
             return of(AuthActions.loginFailure({ error: error.message }));

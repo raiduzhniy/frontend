@@ -1,0 +1,23 @@
+<button [matMenuTriggerFor]="menu" mat-icon-button>
+  <mat-icon>person</mat-icon>
+</button>
+
+<mat-menu #menu="matMenu">
+  <ng-container *ngIf="!isAdminMode">
+    <button
+      *rdnForRole="[userRoles.Admin, userRoles.Superadmin]"
+      mat-menu-item
+      [routerLink]="['admin']">
+      <mat-icon>settings</mat-icon>
+      <span>Панель Адміністратора</span>
+    </button>
+  </ng-container>
+  <button *ngIf="isAdminMode" mat-menu-item [routerLink]="['/']">
+    <mat-icon>undo</mat-icon>
+    <span>Повернутися на сайт</span>
+  </button>
+  <button mat-menu-item (click)="logout()">
+    <mat-icon>logout</mat-icon>
+    <span>Вийти</span>
+  </button>
+</mat-menu>

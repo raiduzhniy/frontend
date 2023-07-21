@@ -1,68 +1,38 @@
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-} from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { RouterOutlet } from '@angular/router';
+  Route,
+  RouterLink,
+  RouterLinkActive,
+  RouterOutlet,
+} from '@angular/router';
+import { UserMenuComponent } from '@shared/components';
 import {
-  AngularEditorConfig,
-  AngularEditorModule,
-} from '@kolkov/angular-editor';
-import { EditorModule } from '@tinymce/tinymce-angular';
-import { EventObj } from '@tinymce/tinymce-angular/editor/Events';
+  LogoWithoutLabelIconComponent,
+  MainLogoComponent,
+} from '@shared/svg-icons';
+import { ADMIN_CHILDREN_ROUTES } from './admin.routes';
 
 @Component({
   selector: 'rdn-admin',
   standalone: true,
   imports: [
     CommonModule,
-    EditorModule,
-    AngularEditorModule,
-    ReactiveFormsModule,
-    MatButtonModule,
     RouterOutlet,
+    MatToolbarModule,
+    MatTabsModule,
+    RouterLink,
+    RouterLinkActive,
+    NgOptimizedImage,
+    MainLogoComponent,
+    LogoWithoutLabelIconComponent,
+    UserMenuComponent,
   ],
-  template: '<router-outlet></router-outlet>',
+  templateUrl: './admin.component.html',
+  styleUrls: ['admin.component.scss'],
 })
 export class AdminComponent {
-  html = '';
-
-  form: FormGroup;
-
-  editorFC = new FormControl('');
-  config: AngularEditorConfig = {
-    editable: true,
-    spellcheck: true,
-    height: '15rem',
-    minHeight: '5rem',
-    placeholder: 'Текст новини...',
-    // translate: 'no',
-    defaultParagraphSeparator: 'p',
-    defaultFontName: 'Roboto',
-    toolbarHiddenButtons: [
-      ['subscript', 'superscript'],
-      ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
-      ['insertImage', 'insertVideo'],
-      ['toggleEditorMode'],
-      ['fontName'],
-    ],
-  };
-  constructor(private fb: FormBuilder) {
-    this.form = fb.group({
-      editor: this.editorFC,
-    });
-  }
-  test(e: EventObj<any>) {
-    console.log(e.editor.bodyElement);
-  }
-
-  submitForm() {
-    console.log(this.form.getRawValue());
-
-    this.html = this.form.get('editor')?.value;
-  }
+  adminRoutes: Route[] = ADMIN_CHILDREN_ROUTES;
 }
