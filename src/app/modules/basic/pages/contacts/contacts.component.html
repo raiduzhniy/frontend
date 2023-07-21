@@ -1,1 +1,3 @@
-<p>contacts works!</p>
+<rdn-html-presentator
+  [htmlData]="contacts$ | async"
+  [isLoading]="!!(isLoading$ | async)"></rdn-html-presentator>

@@ -1,1 +1,4 @@
-<p>admin-contacts works!</p>
+<rdn-html-editor
+  [isLoading]="!!(isLoading$ | async)"
+  [html]="contacts$ | async"
+  (edited)="aboutUsEdited($event)"></rdn-html-editor>

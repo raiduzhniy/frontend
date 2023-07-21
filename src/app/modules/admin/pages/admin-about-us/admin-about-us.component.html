@@ -1,25 +1,4 @@
-<div [rdnLoader]="!!(isLoading$ | async)" class="rdn-admin__about-us">
-  <mat-card>
-    <form (submit)="submitForm()" [formGroup]="form" #formElem="ngForm">
-      <mat-card-content>
-        <mat-form-field style="width: 100%" appearance="fill">
-          <mat-label>Заголовок</mat-label>
-          <input formControlName="title" matInput />
-          <mat-error *ngIf="titleFC.hasError('required')">
-            Обов`язкове поле
-          </mat-error>
-        </mat-form-field>
-        <angular-editor formControlName="html" [config]="config">
-        </angular-editor>
-        <mat-card-actions align="end">
-          <button
-            color="primary"
-            mat-raised-button
-            [disabled]="!!formElem.invalid || !!(isLoading$ | async)">
-            Зберегти
-          </button>
-        </mat-card-actions>
-      </mat-card-content>
-    </form>
-  </mat-card>
-</div>
+<rdn-html-editor
+  [isLoading]="!!(isLoading$ | async)"
+  [html]="aboutUs$ | async"
+  (edited)="aboutUsEdited($event)"></rdn-html-editor>

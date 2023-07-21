@@ -1,0 +1,8 @@
+.rdn-wrapper {
+  min-height: 500px;
+  height: 1px;
+
+  & > mat-card:first-child {
+    height: 100%;
+  }
+}
