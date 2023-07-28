@@ -1,9 +1,4 @@
-import {
-  HttpClient,
-  HttpContext,
-  HttpHeaders,
-  HttpParams,
-} from '@angular/common/http';
+import { HttpClient, HttpContext, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -26,15 +21,7 @@ export class ApiService {
           };
       context?: HttpContext;
       observe?: 'body';
-      params?:
-        | HttpParams
-        | {
-            [param: string]:
-              | string
-              | number
-              | boolean
-              | ReadonlyArray<string | number | boolean>;
-          };
+      params?: any;
       reportProgress?: boolean;
       responseType?: 'json';
       withCredentials?: boolean;
@@ -49,5 +36,9 @@ export class ApiService {
 
   put<T>(url: string, body: any): Observable<T> {
     return this.http.put<T>(`${this.baseUrl}/${url}`, body);
+  }
+
+  delete<T>(url: string): Observable<T> {
+    return this.http.delete<T>(`${this.baseUrl}/${url}`);
   }
 }
