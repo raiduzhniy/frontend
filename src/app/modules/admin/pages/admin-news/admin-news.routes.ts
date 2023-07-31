@@ -8,7 +8,7 @@ export const ADMIN_NEWS_ROUTES: Route[] = [
     component: AdminNewsComponent,
   },
   {
-    path: 'new',
+    path: 'create',
     component: NewsProcessingComponent,
     data: {
       isEditMode: false,

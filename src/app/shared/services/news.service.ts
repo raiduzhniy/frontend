@@ -22,4 +22,16 @@ export class NewsService {
   deleteNews(newsId: string): Observable<{ success: boolean }> {
     return this.apiService.delete(`news/${newsId}/delete`);
   }
+
+  createNews(formData: FormData): Observable<News> {
+    return this.apiService.post(`news/create`, formData);
+  }
+
+  editNews(id: string, formData: FormData): Observable<News> {
+    return this.apiService.put(`news/${id}/edit`, formData);
+  }
+
+  getNews(id: string): Observable<News> {
+    return this.apiService.get(`news/${id}`);
+  }
 }

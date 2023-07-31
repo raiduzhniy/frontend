@@ -45,11 +45,11 @@ import { COMMON_ROUTES } from './basic.routes';
 export class BasicComponent {
   userRoles = UserRole;
 
-  user$ = this.authFacede.user$;
+  user$ = this.authFacade.user$;
 
   constructor(
     private dialog: MatDialog,
-    private authFacede: AuthFacade
+    private authFacade: AuthFacade
   ) {}
 
   commonRoutes: Route[] = COMMON_ROUTES;
@@ -61,7 +61,7 @@ export class BasicComponent {
   }
 
   logout(): void {
-    this.authFacede.dispatchLogout();
+    this.authFacade.dispatchLogout();
   }
 
   protected readonly UserRole = UserRole;

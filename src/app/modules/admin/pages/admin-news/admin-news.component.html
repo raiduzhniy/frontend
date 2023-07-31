@@ -2,7 +2,7 @@
   <mat-card>
     <mat-card-header>
       <div class="buttons-container">
-        <a [routerLink]="['new']" mat-raised-button>Створити новину</a>
+        <a [routerLink]="['create']" mat-raised-button>Створити новину</a>
       </div>
     </mat-card-header>
     <mat-card-content>
@@ -67,8 +67,7 @@
         </table>
         <mat-paginator
           [length]="(newsElements$ | async)?.totalElements"
-          [pageSize]="itemsPerPage"
-          aria-label="Select page of GitHub search results"></mat-paginator>
+          [pageSize]="itemsPerPage"></mat-paginator>
       </div>
     </mat-card-content>
   </mat-card>

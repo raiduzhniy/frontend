@@ -1,3 +1,49 @@
-<rdn-wrapper>
-  {{ isEditMode ? 'edit' : 'create' }}
+<rdn-wrapper [isLoading]="isLoadingNews$ | async">
+  <mat-card>
+    <form (submit)="submitForm()" [formGroup]="form" #formElem="ngForm">
+      <mat-card-content>
+        <mat-form-field style="width: 100%" appearance="fill">
+          <mat-label>Заголовок</mat-label>
+          <input formControlName="title" matInput />
+          <mat-error *ngIf="titleFC.hasError('required')">
+            Обов`язкове поле
+          </mat-error>
+        </mat-form-field>
+        <div class="select-photo__wrapper">
+          <ng-container *ngIf="!selectedImage; else showImage">
+            <rdn-upload-file
+              [accept]="['image/png', 'image/jpeg']"
+              (selected)="selectedFile($event)">
+              Завантижити фото
+            </rdn-upload-file>
+          </ng-container>
+          <ng-template #showImage>
+            <div class="cropped-image__wrapper">
+              <img
+                class="cropped-image"
+                [src]="selectedImage"
+                alt="Образіна картинка" />
+              <div class="image-overlay"></div>
+              <button
+                class="close-button"
+                mat-icon-button
+                (click)="resetImage()">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </div>
+          </ng-template>
+        </div>
+        <angular-editor formControlName="html" [config]="config">
+        </angular-editor>
+        <mat-card-actions align="end">
+          <button
+            color="primary"
+            mat-raised-button
+            [disabled]="!!formElem.invalid">
+            {{ newsId ? 'Зберегти' : 'Створити' }}
+          </button>
+        </mat-card-actions>
+      </mat-card-content>
+    </form>
+  </mat-card>
 </rdn-wrapper>

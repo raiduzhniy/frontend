@@ -1,0 +1,16 @@
+<h2 mat-dialog-title>Обріжте фото</h2>
+<image-cropper
+  [imageChangedEvent]="imageChangedEvent"
+  [maintainAspectRatio]="true"
+  [aspectRatio]="aspectRatio"
+  [imageQuality]="70"
+  format="jpeg"
+  (imageCropped)="imageCropped($event)"
+  (imageLoaded)="imageLoaded($event)"
+  (cropperReady)="cropperReady()"
+  (loadImageFailed)="loadImageFailed()">
+</image-cropper>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Відмінити</button>
+  <button (click)="confirm()" mat-button cdkFocusInitial>Готово</button>
+</mat-dialog-actions>

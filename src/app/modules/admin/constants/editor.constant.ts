@@ -5,7 +5,6 @@ export const TEXT_EDITOR_CONFIG: AngularEditorConfig = {
   spellcheck: true,
   height: '15rem',
   minHeight: '5rem',
-  // translate: 'no',
   defaultParagraphSeparator: 'p',
   defaultFontName: 'Roboto',
   toolbarHiddenButtons: [

@@ -22,3 +22,10 @@ export const selectNewsQueryParams = createSelector(
   selectFeature,
   state => state.queryParams
 );
+
+export const selectIsLoadingNews = createSelector(
+  selectFeature,
+  state => state.isLoadingNews
+);
+
+export const selectNews = createSelector(selectFeature, state => state.news);

@@ -1,0 +1,14 @@
+<button
+  class="upload-photo"
+  type="button"
+  mat-raised-button
+  (click)="fileInput.click()">
+  <ng-content></ng-content>
+</button>
+<input
+  hidden
+  (change)="fileChangeEvent($event)"
+  [multiple]="multiple"
+  [accept]="accept | transformAcceptTypes"
+  #fileInput
+  type="file" />
