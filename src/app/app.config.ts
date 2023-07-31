@@ -1,8 +1,10 @@
+import { registerLocaleData } from '@angular/common';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { APP_INITIALIZER, ApplicationConfig } from '@angular/core';
+import { APP_INITIALIZER, ApplicationConfig, LOCALE_ID } from '@angular/core';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { provideRouter } from '@angular/router';
 import { ContactsEffects } from '@state/contacts/contacts.effects';
+import { NewsEffects } from '@state/news/news.effects';
 import { environment } from '../environments/environment';
 
 import { routes } from './app.routes';
@@ -16,6 +18,9 @@ import { AuthEffects } from '@state/auth/auth.effects';
 import { reducers, metaReducers } from './reducers';
 import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
+import ukLocale from '@angular/common/locales/uk';
+
+registerLocaleData(ukLocale);
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -23,7 +28,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     provideHttpClient(withInterceptors([AuthInterceptor])),
     provideStore(reducers, { metaReducers }),
-    provideEffects(AuthEffects, AboutUsEffects, ContactsEffects),
+    provideEffects(AuthEffects, AboutUsEffects, ContactsEffects, NewsEffects),
     provideStoreDevtools({
       maxAge: 25, // Retains last 25 states
       logOnly: !environment.production, // Restrict extension to log-only mode
@@ -32,6 +37,7 @@ export const appConfig: ApplicationConfig = {
       traceLimit: 75, // maximum stack trace frames to be stored (in case trace option was provided as true)
     }),
     { provide: ErrorStateMatcher, useClass: MyErrorStateMatcher },
+    { provide: LOCALE_ID, useValue: 'uk' },
     {
       provide: APP_INITIALIZER,
       useFactory: UserInitializer,

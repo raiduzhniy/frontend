@@ -1,0 +1,8 @@
+<h2 mat-dialog-title>Підтвердіть дію</h2>
+<mat-dialog-content class="inputs">
+  {{ message || 'Ви дійсно хочете зробити цю дію?' }}
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Ні</button>
+  <button (click)="confirm()" mat-button cdkFocusInitial>Так</button>
+</mat-dialog-actions>

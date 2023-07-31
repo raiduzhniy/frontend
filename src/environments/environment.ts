@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://api-7vg5xpvwka-lm.a.run.app/v1',
+  apiUrl: 'http://127.0.0.1:5001/raiduzhniy-backend/europe-central2/api/v1',
 };

@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-import { forRolesGuard } from './core/guards/for-roles.guard';
+import { forRolesGuard } from '@core/guards/for-roles.guard';
 import { NotFoundComponent } from './modules/not-found/not-found.component';
-import { UserRole } from './shared/enums';
+import { UserRole } from '@shared/enums';
 
 export const routes: Routes = [
   {

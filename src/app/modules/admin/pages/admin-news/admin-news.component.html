@@ -1,10 +1,74 @@
-<mat-card>
-  <form (submit)="submitForm()" [formGroup]="form">
-    <mat-card-header>Редагувати новини</mat-card-header>
+<rdn-wrapper [isLoading]="!!(isLoading$ | async)">
+  <mat-card>
+    <mat-card-header>
+      <div class="buttons-container">
+        <a [routerLink]="['create']" mat-raised-button>Створити новину</a>
+      </div>
+    </mat-card-header>
     <mat-card-content>
-      <angular-editor
-        formControlName="editor"
-        [config]="config"></angular-editor>
+      <div class="table">
+        <table
+          mat-table
+          [dataSource]="(newsElements$ | async)?.elements"
+          matSort
+          matSortActive="createdAt"
+          matSortDirection="desc">
+          <!-- actions Column -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Взаємодія</th>
+            <td mat-cell *matCellDef="let row">
+              <a
+                matTooltip="Редагувати"
+                matTooltipPosition="above"
+                [routerLink]="[row.id]"
+                mat-icon-button>
+                <mat-icon>edit</mat-icon>
+              </a>
+              <button
+                matTooltip="Видалити"
+                matTooltipPosition="above"
+                (click)="deleteNews(row)"
+                mat-icon-button>
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <!-- createdAt Column -->
+          <ng-container matColumnDef="createdAt">
+            <th mat-header-cell mat-sort-header disableClear *matHeaderCellDef>
+              Дата створення
+            </th>
+            <td mat-cell *matCellDef="let row">
+              {{ row.createdAt | date: 'medium' }}
+            </td>
+          </ng-container>
+
+          <!-- editedAt Column -->
+          <ng-container matColumnDef="editedAt">
+            <th mat-header-cell mat-sort-header disableClear *matHeaderCellDef>
+              Дата редагування
+            </th>
+            <td mat-cell *matCellDef="let row">
+              {{ (row.editedAt | date: 'medium') || '-//-' }}
+            </td>
+          </ng-container>
+
+          <!-- title Column -->
+          <ng-container matColumnDef="title">
+            <th mat-header-cell mat-sort-header disableClear *matHeaderCellDef>
+              Назва новини
+            </th>
+            <td mat-cell *matCellDef="let row">{{ row.title }}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+        <mat-paginator
+          [length]="(newsElements$ | async)?.totalElements"
+          [pageSize]="itemsPerPage"></mat-paginator>
+      </div>
     </mat-card-content>
-  </form>
-</mat-card>
+  </mat-card>
+</rdn-wrapper>
